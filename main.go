@@ -1,6 +1,6 @@
 package main
 
-import "go-tools/utils/log"
+import "github.com/zinego/go-tools/utils/log"
 
 func main() {
 	log.Init()
