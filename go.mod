@@ -1,4 +1,4 @@
-module go-tools
+module github.com/zinego/go-tools
 
 go 1.16
 
