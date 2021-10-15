@@ -1,0 +1,15 @@
+name: main
+on:
+  push:
+    branchs:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - uses: actions/setup-go@v1
+        with:
+          go-version: 1.16
+      - run: go test ./... -race -coverprofile=coverage.txt -covermode=atomic -v
+      - run: bash <(curl -s https://codecov.io/bash) -t ${{ secrets.b8aaa660-5024-4ae1-89a2-6ea998154d31 }}
