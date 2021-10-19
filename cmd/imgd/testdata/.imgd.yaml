@@ -1,6 +1,8 @@
 auth:
   method: private_key
-  private_key_path: /~/.ssh/id_rsa
+  private-key-path: /Users/zinego/.ssh/id_rsa
   username: usernameTest
   password: x
-img_respository: "~/Documents/Code/Go/src/github.com/zinego/image"
+img-respository: "/Users/zinego/Documents/Code/Go/src/github.com/zinego/image"
+remote-name: gitee # such as origin / github / gitee
+img-url-prefix: "https://gitee.com/zinego/image/raw/main/" # or https://github.com/zinego/image/blob/main/
