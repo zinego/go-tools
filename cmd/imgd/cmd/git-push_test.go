@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"testing"
@@ -8,5 +8,5 @@ import (
 
 func Test_publicKey(t *testing.T) {
 	log.Init()
-	publicKey(publicKeyPath)
+	publicKey("")
 }

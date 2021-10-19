@@ -32,7 +32,11 @@ var rootCmd = &cobra.Command{
 	Long: `Use this cmd to save your image from clipboard 
 	and push that to your github/gitee/...`,
 	Run: func(cmd *cobra.Command, args []string) {
-
+		fmt.Println(cfgFile)
+		initConfig()
+		fmt.Println(imgdCfg)
+		fname := saveToRespository()
+		push(fname)
 	},
 }
 
@@ -43,7 +47,6 @@ func Execute() {
 }
 
 func init() {
-	cobra.OnInitialize(initConfig)
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
@@ -69,11 +72,13 @@ func initConfig() {
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+	if err := viper.ReadInConfig(); err != nil {
+		fmt.Fprintf(os.Stderr, "Using config file <%s> error: %v\n", viper.ConfigFileUsed(), err)
+		os.Exit(1)
 	}
 
 	if err := viper.Unmarshal(&imgdCfg); err != nil {
 		fmt.Fprintln(os.Stderr, "Unmarshal config file:", err)
+		os.Exit(1)
 	}
 }
