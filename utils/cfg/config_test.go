@@ -10,14 +10,14 @@ import (
 func TestReadConfiguration(t *testing.T) {
 	t.Run("normal", func(t *testing.T) {
 		var imgdCfg ImgdConfiguration
-		var err = ReadConfiguration("imgd", &imgdCfg)
+		var err = ReadConfiguration("cfg", &imgdCfg)
 		assert.Equal(t, nil, err)
 		pretty.Println(imgdCfg)
 	})
 	t.Run("error", func(t *testing.T) {
 		var imgdCfg ImgdConfiguration
-		var err = ReadConfiguration("imgd.ya", &imgdCfg)
-		assert.NotEqual(t, `nil`, err)
+		var err = ReadConfiguration("cfg.ya", &imgdCfg)
+		assert.NotEqual(t, nil, err)
 		pretty.Println(imgdCfg)
 	})
 }
