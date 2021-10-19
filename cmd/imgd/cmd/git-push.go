@@ -36,7 +36,8 @@ func push(fname string) {
 		fmt.Println("save image failed: ", err)
 		return
 	}
-	fmt.Println("save image succeeded. addr: ")
+	addr := "https://raw.githubusercontent.com/zinego/image/main/" + strings.TrimPrefix(fname, imgdCfg.ImgRespository+"/")
+	fmt.Println("save image succeeded. addr: ", addr)
 }
 
 const (

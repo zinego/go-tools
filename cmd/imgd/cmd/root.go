@@ -32,9 +32,7 @@ var rootCmd = &cobra.Command{
 	Long: `Use this cmd to save your image from clipboard 
 	and push that to your github/gitee/...`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(cfgFile)
 		initConfig()
-		fmt.Println(imgdCfg)
 		fname := saveToRespository()
 		push(fname)
 	},
