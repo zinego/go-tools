@@ -31,13 +31,15 @@ func push(fname string) {
 	}
 	msg := fmt.Sprintf(time.Now().Format("add image at 2006-01-02T15:04:05"))
 	w.Commit(msg, &git.CommitOptions{})
-	err = respository.Push(&git.PushOptions{Auth: newAuth()})
+	err = respository.Push(&git.PushOptions{
+		Auth:       newAuth(),
+		RemoteName: imgdCfg.RemoteName,
+	})
 	if err != nil {
 		fmt.Println("save image failed: ", err)
 		return
 	}
-	addr := "https://raw.githubusercontent.com/zinego/image/main/" + strings.TrimPrefix(fname, imgdCfg.ImgRespository+"/")
-	fmt.Println("save image succeeded. addr: ", addr)
+	fmt.Println("save image succeeded. addr: ", imgdCfg.ImgUrlPrefix+strings.TrimPrefix(fname, imgdCfg.ImgRespository+"/"))
 }
 
 const (
