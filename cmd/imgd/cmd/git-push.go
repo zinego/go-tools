@@ -24,6 +24,14 @@ func push(fname string) {
 		fmt.Println("worktree failed: ", err)
 		os.Exit(1)
 	}
+	err = w.Pull(&git.PullOptions{
+		Auth:       newAuth(),
+		RemoteName: imgdCfg.RemoteName,
+	})
+	if err != nil && !strings.Contains(err.Error(), "already up-to-date") {
+		fmt.Println("pull respository failed:", err)
+		return
+	}
 	hash, err := w.Add(strings.TrimPrefix(fname, imgdCfg.ImgRespository+"/"))
 	if err != nil {
 		fmt.Println(hash.String(), err)
