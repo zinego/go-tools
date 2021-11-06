@@ -1,56 +1,5 @@
 package log
 
-import (
-	"fmt"
-	"os"
-	"path"
-
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
-	"gopkg.in/natefinch/lumberjack.v2"
-)
-
-var logger *zap.SugaredLogger
-
-func getProjectRoot() string {
-	pwd, _ := os.Getwd()
-	for {
-		if pwd == "/" {
-			return ""
-		}
-		entryList, err := os.ReadDir(pwd)
-		if err != nil {
-			return ""
-		}
-		for _, v := range entryList {
-			if v.Name() == "go.mod" {
-				return pwd
-			}
-		}
-		pwd = path.Dir(pwd)
-	}
-}
-
-func Init() {
-	projectRoot := getProjectRoot()
-	hook := lumberjack.Logger{
-		Filename:   fmt.Sprintf("%s/output/logs/%s.log", projectRoot, path.Base(projectRoot)),
-		MaxSize:    1024,
-		MaxBackups: 3,
-		MaxAge:     7,
-		Compress:   true,
-		LocalTime:  true,
-	}
-	cfg := zap.NewDevelopmentEncoderConfig()
-	cfg.EncodeLevel = zapcore.CapitalColorLevelEncoder
-	core := zapcore.NewTee(
-		zapcore.NewCore(zapcore.NewConsoleEncoder(cfg), zapcore.AddSync(os.Stdout), zap.DebugLevel),
-		zapcore.NewCore(zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig()), zapcore.AddSync(&hook), zap.DebugLevel),
-	)
-	logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1)).Sugar()
-	defer logger.Sync()
-}
-
 func Debug(args ...interface{})                        { logger.Debug(args...) }
 func Info(args ...interface{})                         { logger.Info(args...) }
 func Warn(args ...interface{})                         { logger.Warn(args...) }

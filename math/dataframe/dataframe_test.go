@@ -1,11 +1,8 @@
 package dataframe
 
 import (
-	"os"
 	"testing"
-	"time"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/zinego/go-tools/utils/log"
 )
 
@@ -16,9 +13,7 @@ func TestLoadFromMapStringFloat64(t *testing.T) {
 			"world": {0.2, 0.3, 0.3, 0.4},
 		}
 		r := LoadFromMapStringFloat64(m)
-		f, _ := os.Create(time.Now().String() + ".csv")
-		defer f.Close()
-		assert.Nil(t, r.WriteCSV(f))
+		log.Info(r.String())
 	})
 	t.Run("test", func(t *testing.T) {
 		test(1, 2, 4)
@@ -27,7 +22,6 @@ func TestLoadFromMapStringFloat64(t *testing.T) {
 }
 
 func test(i ...int) {
-	log.Init()
 	for _, v := range i {
 		log.Info(v)
 	}
