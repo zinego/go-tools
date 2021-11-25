@@ -3,7 +3,7 @@ package log
 import (
 	"fmt"
 	"os"
-	"path"
+	"path/filepath"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -16,7 +16,7 @@ func init() {
 		WithMaxAge(7),
 		WithMaxByteSize(1024*1024),
 		WithMaxBackups(16),
-		WithFileName(fmt.Sprintf("%s/output/logs/%s.log", projectRoot, path.Base(projectRoot))),
+		WithFileName(fmt.Sprintf("%s/output/logs/%s.log", projectRoot, filepath.Base(projectRoot))),
 	)
 }
 
@@ -37,7 +37,7 @@ func getProjectRoot() string {
 				return pwd
 			}
 		}
-		pwd = path.Dir(pwd)
+		pwd = filepath.Dir(pwd)
 	}
 }
 
