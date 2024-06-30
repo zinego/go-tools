@@ -38,7 +38,11 @@ func push(fname string) {
 		os.Exit(1)
 	}
 	msg := fmt.Sprintf(time.Now().Format("add image at 2006-01-02T15:04:05"))
-	w.Commit(msg, &git.CommitOptions{})
+	_, err = w.Commit(msg, &git.CommitOptions{})
+	if err != nil {
+		fmt.Printf("commit failed: %v\n", err)
+		return
+	}
 	err = respository.Push(&git.PushOptions{
 		Auth:       newAuth(),
 		RemoteName: imgdCfg.RemoteName,

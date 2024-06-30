@@ -3,7 +3,12 @@ module github.com/zinego/go-tools/cmd/imgd
 go 1.16
 
 require (
-	github.com/go-git/go-git/v5 v5.4.2
+	github.com/acomagu/bufpipe v1.0.3 // indirect
+	github.com/flynn/go-shlex v0.0.0-20150515145356-3f9db97f8568 // indirect
+	github.com/go-git/go-git/v5 v5.12.0
+	github.com/imdario/mergo v0.3.12 // indirect
+	github.com/jessevdk/go-flags v1.5.0 // indirect
+	github.com/konsorten/go-windows-terminal-sequences v1.0.1 // indirect
 	github.com/skanehira/clipboard-image/v2 v2.0.0
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.9.0
