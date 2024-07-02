@@ -38,7 +38,7 @@ func push(fname string) {
 		os.Exit(1)
 	}
 	msg := fmt.Sprintf(time.Now().Format("add image at 2006-01-02T15:04:05"))
-	_, err = w.Commit(msg, &git.CommitOptions{})
+	hash, err = w.Commit(msg, &git.CommitOptions{})
 	if err != nil {
 		fmt.Printf("commit failed: %v\n", err)
 		return
@@ -51,7 +51,7 @@ func push(fname string) {
 		fmt.Println("save image failed: ", err)
 		return
 	}
-	fmt.Println("save image succeeded. addr: ", imgdCfg.ImgUrlPrefix+strings.TrimPrefix(fname, imgdCfg.ImgRespository+"/"))
+	fmt.Println("save image succeeded. addr: ", fmt.Sprintf("%s/%s/%s", imgdCfg.ImgUrlPrefix, hash.String(), strings.TrimPrefix(fname, imgdCfg.ImgRespository+"/")))
 }
 
 const (
