@@ -6,5 +6,5 @@
 
 ```bash
 go get github.com/zinego/go-tools/cmd/gfs
- ./gfs -f a=../imgd,b=../static/ -p 9999
+ gfs -f a=../imgd,b=../static/ -p 9999
 ```
