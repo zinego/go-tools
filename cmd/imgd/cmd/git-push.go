@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"strings"
 	"time"
@@ -13,13 +13,13 @@ import (
 	"github.com/skanehira/clipboard-image/v2"
 )
 
-func push(fname string) {
-	respository, err := git.PlainOpen(imgdCfg.ImgRespository)
+func push(filename string) {
+	repository, err := git.PlainOpen(imgdCfg.ImgRespository)
 	if err != nil {
 		fmt.Println("open git repository failed: ", err)
 		os.Exit(1)
 	}
-	w, err := respository.Worktree()
+	w, err := repository.Worktree()
 	if err != nil {
 		fmt.Println("worktree failed: ", err)
 		os.Exit(1)
@@ -29,10 +29,10 @@ func push(fname string) {
 		RemoteName: imgdCfg.RemoteName,
 	})
 	if err != nil && !strings.Contains(err.Error(), "already up-to-date") {
-		fmt.Println("pull respository failed:", err)
+		fmt.Println("pull repository failed:", err)
 		return
 	}
-	hash, err := w.Add(strings.TrimPrefix(fname, imgdCfg.ImgRespository+"/"))
+	hash, err := w.Add(strings.TrimPrefix(filename, imgdCfg.ImgRespository+"/"))
 	if err != nil {
 		fmt.Println(hash.String(), err)
 		os.Exit(1)
@@ -43,7 +43,7 @@ func push(fname string) {
 		fmt.Printf("commit failed: %v\n", err)
 		return
 	}
-	err = respository.Push(&git.PushOptions{
+	err = repository.Push(&git.PushOptions{
 		Auth:       newAuth(),
 		RemoteName: imgdCfg.RemoteName,
 	})
@@ -51,7 +51,7 @@ func push(fname string) {
 		fmt.Println("save image failed: ", err)
 		return
 	}
-	fmt.Println("save image succeeded. addr: ", fmt.Sprintf("%s/%s/%s", imgdCfg.ImgUrlPrefix, hash.String(), strings.TrimPrefix(fname, imgdCfg.ImgRespository+"/")))
+	fmt.Println("save image succeeded. addr: ", fmt.Sprintf("%s/%s/%s", imgdCfg.ImgUrlPrefix, hash.String(), strings.TrimPrefix(filename, imgdCfg.ImgRespository+"/")))
 }
 
 const (
@@ -75,7 +75,7 @@ func newAuth() transport.AuthMethod {
 
 func publicKey(filePath string) *ssh.PublicKeys {
 	var publicKey *ssh.PublicKeys
-	sshKey, _ := ioutil.ReadFile(filePath)
+	sshKey, _ := os.ReadFile(filePath)
 	publicKey, err := ssh.NewPublicKeys("git", []byte(sshKey), "")
 	if err != nil {
 		fmt.Println("new publicKey failied: ", err)
@@ -84,14 +84,14 @@ func publicKey(filePath string) *ssh.PublicKeys {
 	return publicKey
 }
 
-func saveToRespository() (fname string) {
+func saveToRepository() (fname string) {
 	var dir = imgdCfg.ImgRespository
 	imgd, err := clipboard.Read()
 	if err != nil {
 		fmt.Println("read clipboard image failed: ", err)
 		os.Exit(1)
 	}
-	body, err := ioutil.ReadAll(imgd)
+	body, err := io.ReadAll(imgd)
 	if err != nil {
 		fmt.Println("read all clipboard image failed: ", err)
 		os.Exit(1)
